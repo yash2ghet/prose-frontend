@@ -1,30 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-
 import { useState } from "react";
 import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
-import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { authClient } from "@/lib/auth-client";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -33,9 +26,9 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-
 export default function LoginForm() {
   const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -68,13 +61,14 @@ export default function LoginForm() {
         } else {
           toast.error(error.message || "Login failed.");
         }
+
         return;
       }
 
       toast.success("Login successful!");
-      router.push("/dashboard");
+      router.push("/");
       router.refresh();
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -82,94 +76,127 @@ export default function LoginForm() {
   };
 
   return (
-    <>
-    <div className="mb-9 flex items-center gap-3">
-      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-        <span className="text-lg font-semibold text-accent">
+    <div className="w-full max-w-[25rem]">
+      <div className="mb-7 flex items-center gap-[0.5625rem]">
+        <span className="inline-flex size-[1.625rem] items-center justify-center rounded-[0.3125rem] bg-primary text-[0.8125rem] font-bold text-accent">
           P
+        </span>
+
+        <span className="text-base font-semibold text-text">
+          Prose CMS
         </span>
       </div>
 
-      <span className="text-lg font-semibold text-text">
-        Prose CMS
-      </span>
-    </div>
-    
-    <div className="flex flex-col gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome back</CardTitle>
-            <CardDescription>
-              Sign in to manage articles and categories.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FieldGroup>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field aria-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        type="email"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="m@example.com"
-                        required
-                        autoFocus
-                        autoComplete="email"
-                        className="placeholder:text-muted-foreground/70" />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )} />
+      <div className="rounded-lg border border-border bg-surface p-7">
+        <h1 className="mb-1.5 text-[1.375rem] font-semibold tracking-wide text-text">
+          Welcome back
+        </h1>
 
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field aria-invalid={fieldState.invalid}>
-                      <div className="flex items-center justify-between w-full">
-                        <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                        <Link
-                          href="/forgot-password"
-                          className="text-xs underline-offset-2 hover:underline ml-auto"
-                        >
-                          Forgot your password?
-                        </Link>
-                      </div>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        type="password"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="••••••••"
-                        required
-                        autoComplete="current-password"
-                        className="placeholder:text-muted-foreground/70" />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )} />
-
-                <Field>
-                  <Button type="submit" disabled={loading}>
-                    {loading && <Spinner className="w-4 h-4" />}
-                    {loading ? "Signing in..." : "Login"}
-                  </Button>
-                </Field>
-              </FieldGroup>
-            </form>
-          </CardContent>
-        </Card>
-        <p className="text-center text-xs text-muted-foreground">
-          Accounts are provisioned by an administrator.
+        <p className="mb-6 text-sm text-text-muted tracking-wide">
+          Sign in to manage articles and categories.
         </p>
-      </div></>
-  )
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FieldGroup className="gap-0">
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field
+                  aria-invalid={fieldState.invalid}
+                  className="gap-0"
+                >
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className="mb-[0.4375rem] text-[0.8125rem] font-medium text-text tracking-wide"
+                  >
+                    Email
+                  </FieldLabel>
+
+                  <Input
+                    {...field}
+                    id={field.name}
+                    type="email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="you@company.com"
+                    required
+                    autoFocus
+                    autoComplete="email"
+                    className="h-10 rounded-md px-3 text-sm placeholder:text-muted-foreground/70"
+                  />
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <div className="h-[0.875rem]" />
+
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field
+                  aria-invalid={fieldState.invalid}
+                  className="gap-0"
+                >
+                  <div className="mb-[0.4375rem] flex w-full items-center justify-between">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="text-[0.8125rem] font-medium text-text tracking-wide"
+                    >
+                      Password
+                    </FieldLabel>
+
+                  </div>
+
+                  <div className="flex h-10 items-center gap-2 rounded-md border border-border px-3 focus-within:ring-2 focus-within:ring-ring/30">
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type={showPassword ? "text" : "password"}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="••••••••"
+                      required
+                      autoComplete="current-password"
+                      className="h-full flex-1 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((value) => !value)}
+                      className="shrink-0 bg-transparent text-xs font-medium text-text-muted hover:text-text"
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Field className="mt-5">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="h-[2.625rem] w-full gap-[0.5625rem] rounded-md text-[0.90625rem] font-medium"
+              >
+                {loading && <Spinner className="size-4" />}
+                {loading ? "Signing in..." : "Sign in"}
+              </Button>
+            </Field>
+          </FieldGroup>
+        </form>
+      </div>
+
+      <p className="mt-[1.125rem] text-center text-[0.78125rem] text-text-subtle">
+        Accounts are provisioned by an administrator.
+      </p>
+    </div>
+  );
 }

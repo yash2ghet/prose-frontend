@@ -17,7 +17,7 @@ export function BlogPagination({
   totalPages,
 }: BlogPaginationProps) {
   return (
-    <Pagination className="mx-0 justify-start">
+    <Pagination className="mx-0 justify-center">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
