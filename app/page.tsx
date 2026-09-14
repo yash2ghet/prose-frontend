@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+  process.env.NEXT_PUBLIC_API_URL
 
 interface Article {
   id: string

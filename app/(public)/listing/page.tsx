@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  process.env.NEXT_PUBLIC_API_URL;
 
 const ARTICLES_PER_PAGE = 6;
 
