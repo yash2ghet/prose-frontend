@@ -168,7 +168,7 @@ async function getCategories(): Promise<Category[]> {
   }
 }
 
-export default function BlogsPage() {
+function ListingContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -552,5 +552,13 @@ export default function BlogsPage() {
 
       <SiteFooter />
     </>
+  );
+}
+
+export default function BlogsPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <ListingContent />
+    </React.Suspense>
   );
 }

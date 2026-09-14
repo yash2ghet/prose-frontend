@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input"
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL
 
+  export const dynamic = "force-dynamic"
+
 interface Article {
   id: string
   title: string
